@@ -4,6 +4,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AppLayout from "./components/layout/AppLayout";
+import { AuthProvider } from "@/lib/auth";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import Login from "@/pages/auth/Login";
+import Signup from "@/pages/auth/Signup";
 import Dashboard from "./pages/Dashboard";
 import MoodPage from "./pages/MoodPage";
 import HabitsPage from "./pages/HabitsPage";
@@ -17,23 +21,77 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
+      <TooltipProvider>
+      <AuthProvider>
       <Toaster />
       <Sonner />
       <BrowserRouter>
         <AppLayout>
           <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/mood" element={<MoodPage />} />
-            <Route path="/habits" element={<HabitsPage />} />
-            <Route path="/tasks" element={<TasksPage />} />
-            <Route path="/journal" element={<JournalPage />} />
-            <Route path="/finance" element={<FinancePage />} />
-            <Route path="/insights" element={<InsightsPage />} />
+            <Route path="/auth/login" element={<Login />} />
+            <Route path="/auth/signup" element={<Signup />} />
+
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/mood"
+              element={
+                <ProtectedRoute>
+                  <MoodPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/habits"
+              element={
+                <ProtectedRoute>
+                  <HabitsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/tasks"
+              element={
+                <ProtectedRoute>
+                  <TasksPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/journal"
+              element={
+                <ProtectedRoute>
+                  <JournalPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/finance"
+              element={
+                <ProtectedRoute>
+                  <FinancePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/insights"
+              element={
+                <ProtectedRoute>
+                  <InsightsPage />
+                </ProtectedRoute>
+              }
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AppLayout>
       </BrowserRouter>
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
